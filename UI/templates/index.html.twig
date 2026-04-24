@@ -1,0 +1,106 @@
+{% extends 'layout.html.twig' %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('plugins/datagenerator/datagenerator.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	<script src="{{ asset('plugins/datagenerator/index.js') }}"></script>
+{% endblock %}
+
+{% block page_title %}
+	Générateur de données
+{% endblock %}
+
+{% block page_description %}
+	Générez des données de test pour votre application.
+{% endblock %}
+
+{% block page_action %}
+	<div class="flex items-center justify-end gap-3">
+		<a href="{{ path('data_generator_notification') }}" class="btn btn-secondary small">
+			<i class="fas fa-paper-plane"></i>
+			Générer des notifications</a>
+		<a href="{{ path('data_generator_ticket_generator') }}" class="btn btn-secondary small">
+			<i class="fas fa-ticket"></i>
+			Générer un ticket</a>
+		<a href="{{ path('data_generator_clear') }}" class="btn btn-danger small" onclick="confirm('Êtes-vous sûr de vouloir supprimer les données générées ?')">
+			<i class="fas fa-triangle-exclamation"></i>
+			Effacer les données générées</a>
+	</div>
+{% endblock %}
+
+{% block main %}
+	{% include "@DataGenerator/components/db_snapshot.html.twig" with { counters: counters } %}
+
+	{{ form_start(form, { attr: { 'data-turbo': 'false' } }) }}
+
+	<div class="grid grid-cols-2 gap-4 w-fit">
+		<section class="p-3 pt-1 border rounded-md bg-white border-slate-200">
+			<h3 class="text-slate-500 text-lg font-semibold col-span-2 pb-2 border-b border-slate-200 mb-3">
+				<i class="fas fa-user pr-1"></i>
+				Exploitant
+			</h3>
+			{{form_row(form.exploitant)}}
+			{{form_row(form.email)}}
+			{{form_row(form.isPrestataire)}}
+		</section>
+
+		<section class="p-3 pt-1 border rounded-md bg-white border-slate-200">
+			<h3 class="text-slate-500 text-lg font-semibold col-span-2 pb-2 border-b border-slate-200 mb-3">
+				<i class="fas fa-user pr-1"></i>
+				Prestataire
+			</h3>
+			{{form_row(form.prestataire)}}
+			{{form_row(form.emailPrestataire)}}
+		</section>
+
+		<section class="p-3 pt-1 border rounded-md bg-white border-slate-200">
+			<h3 class="text-slate-500 text-lg font-semibold col-span-2 pb-2 border-b border-slate-200 mb-3">
+				<i class="fas fa-seedling pr-1"></i>
+				Parcelles
+			</h3>
+
+			{{form_row(form.parcelles)}}
+			{{form_row(form.cepages)}}
+		</section>
+
+		<section class="p-3 pt-1 border rounded-md bg-white border-slate-200">
+			<h3 class="text-slate-500 text-lg font-semibold col-span-2 pb-2 border-b border-slate-200 mb-3">
+				<i class="fas fa-tractor"></i>
+				Production</h3>
+
+			{{form_row(form.production)}}
+			{{form_row(form.prelevement)}}
+		</section>
+
+		<section class="p-3 pt-1 border rounded-md bg-white border-slate-200">
+			<h3 class="text-slate-500 text-lg font-semibold col-span-2 pb-2 border-b border-slate-200 mb-3">
+				<i class="fas fa-comment"></i>
+				Convocation</h3>
+
+			{{form_row(form.convocation)}}
+			{{form_row(form.accept)}}
+
+			{{form_row(form.date)}}
+		</section>
+
+		<section class="p-3 pt-1 border rounded-md bg-white border-slate-200">
+			<h3 class="text-slate-500 text-lg font-semibold col-span-2 pb-2 border-b	 border-slate-200 mb-3">
+				<i class="fas fa-gear"></i>
+				Options</h3>
+
+			{{form_row(form.events)}}
+			{{form_row(form.passed)}}
+		</section>
+	</div>
+
+	<button class="btn btn-primary mt-3">
+		<i class="fas fa-wand-magic-sparkles"></i>
+		Générer les données</button>
+
+	{{form_end(form)}}
+
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'layout.html.twig' %}
+
+{% block breadcrumb %}
+	<a href="{{ path('data_generator_index') }}">Générateur de données/</a>
+	<span>Générateur de tickets</span>
+{% endblock %}
+
+{% block page_back_url %}
+	{{ path('data_generator_index') }}
+{% endblock %}
+{% block page_back_label %}Retour à la page d'accueil
+{% endblock %}
+
+
+{% block title %}
+	Générateur de tickets
+{% endblock %}
+
+{% block page_title %}
+	Générateur de tickets
+{% endblock %}
+
+{% block page_description %}
+	Générez un fichier texte de tickets pour un exploitant ou pour tous les exploitants (une ligne par ticket, convocations acceptées du jour).
+{% endblock %}
+
+{% block main %}
+
+	{{form_start(form)}}
+	{{form_row(form.user)}}
+	<button type="submit" class="btn btn-primary">
+		<i class="fas fa-ticket"></i>
+		Générer le(s) ticket(s)
+	</button>
+
+	{{form_end(form)}}
+
+{% endblock %}

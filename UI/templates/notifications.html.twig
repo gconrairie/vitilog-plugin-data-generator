@@ -1,0 +1,32 @@
+{% extends 'layout.html.twig' %}
+
+{% block page_back_url %}
+	{{ path('data_generator_index') }}
+{% endblock %}
+
+{% block page_back_label %}
+	Retour à la génération de données
+{% endblock %}
+
+{% block page_title %}
+	Création de notifications
+{% endblock %}
+
+{% block page_description %}
+	Création de notifications pour les utilisateurs du cave.
+{% endblock %}
+
+{% block main %}
+	<section class="rounded-xl border border-slate-200 bg-white shadow-sm p-6 max-w-2xl w-fit">
+		{{ form_start(form, { attr: { 'data-turbo': 'false' } }) }}
+		{{form_row(form.user)}}
+		{{form_row(form.number)}}
+
+		<button class="btn btn-primary mt-2">
+			<i class="fas fa-paper-plane mr-2"></i>
+			Envoyer les notifications
+		</button>
+
+		{{form_end(form)}}
+	</section>
+{% endblock %}
