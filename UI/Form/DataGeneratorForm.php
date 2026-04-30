@@ -2,6 +2,7 @@
 
 namespace App\Plugins\DataGenerator\UI\Form;
 
+use App\Modules\Cave\Infrastructure\Context\CaveContext;
 use App\Modules\Cepage\Domain\Cepage;
 use App\Modules\User\Infrastructure\Repository\UserRepository;
 use App\Shared\Form\Type\SwitchType;
@@ -19,12 +20,13 @@ class DataGeneratorForm
         private FormFactoryInterface $formFactory,
         private UserRepository $userRepository,
         private EntityManagerInterface $entityManager,
-    ) {
-    }
+        private CaveContext $caveContext,
+    ) {}
 
     public function buildForm(): FormInterface
     {
-        $allUsers = $this->userRepository->findAll();
+        $cave = $this->caveContext->getCave();
+        $allUsers = $this->userRepository->findAllForCave($cave);
         $exploitantChoices = [
             'Aucun' => -1,
             'Nouvel exploitant' => 0,
@@ -181,7 +183,7 @@ class DataGeneratorForm
                 ],
             ])
             ->add('passed', SwitchType::class, [
-                'label' => 'Générer des données passées ('.(new \DateTime())->modify('-1 year')->format('Y').')',
+                'label' => 'Générer des données passées (' . (new \DateTime())->modify('-1 year')->format('Y') . ')',
                 'required' => false,
                 'attr' => [
                     'data-control' => 'dg-fixture',

@@ -36,7 +36,7 @@ class DataGeneratorController extends AbstractController
             throw new \Exception('Cave not found');
         }
 
-        $counters = $readDatabaseHandler->handle();
+        $counters = $readDatabaseHandler->handle($cave);
 
         $form = $dataGeneratorForm->buildForm();
         $form->handleRequest($request);

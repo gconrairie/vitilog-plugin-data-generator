@@ -19,7 +19,8 @@ final class CreateUserHandler
         private readonly ModuleCreateUserHandler $createUserHandler,
         private readonly ActorContextProvider $actorContextProvider,
         private readonly SluggerInterface $slugger,
-    ) {}
+    ) {
+    }
 
     public function handleExploitant(DataGenerationDto $dto): ?array
     {
@@ -60,7 +61,7 @@ final class CreateUserHandler
         $response = 'update' === $status ? 'Mise à jour ' : 'Création ';
         $response .= 'exploitant' === $type ? 'de l\'exploitant' : 'du prestataire';
 
-        return [$response . " {$user->getPrenom()} {$user->getNom()} - {$user->getEmail()} - {$user->getCode()}"];
+        return [$response." {$user->getPrenom()} {$user->getNom()} - {$user->getEmail()} - {$user->getCode()}"];
     }
 
     public function handle(DataGenerationDto $dto, int $userId, array $roles, ?string $email = null): ?array
@@ -71,9 +72,9 @@ final class CreateUserHandler
         $lastName = (string) $faker->lastName();
         $societe = (string) $faker->company();
         $code = (string) random_int(1000, 9999);
-        $email = $email ?? $this->slugger->slug($firstName . '.' . $lastName)->lower() . '.' . $code . '@vitilog.fr';
+        $email = $email ?? $this->slugger->slug($firstName.'.'.$lastName)->lower().'.'.$code.'@vitilog.fr';
         // Crée un telephone mobile FR ()
-        $telephone = '06' . $faker->randomNumber(8, true);
+        $telephone = '06'.$faker->randomNumber(8, true);
 
         $actorContext = $this->actorContextProvider->get();
         // $roles = $dto->isPrestataire ? ['ROLE_EXPLOITANT', 'ROLE_PRESTATAIRE'] : ['ROLE_EXPLOITANT'];
