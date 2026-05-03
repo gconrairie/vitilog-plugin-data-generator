@@ -68,7 +68,7 @@ class DataGeneratorController extends AbstractController
                 // Turbo (et en général) exige une redirection après POST (PRG pattern)
                 return $this->redirectToRoute('data_generator_index', status: 303);
             } catch (\Exception $e) {
-                $this->addFlash('danger', 'Erreur lors de la génération des données : '.$e->getMessage());
+                $this->addFlash('danger', 'Erreur lors de la génération des données : ' . $e->getMessage());
             }
         }
 
@@ -89,7 +89,7 @@ class DataGeneratorController extends AbstractController
             $clearDataHandler->handle();
             $this->addFlash('success', 'Données supprimées avec succès !');
         } catch (\Exception $e) {
-            $this->addFlash('danger', 'Erreur lors de la suppression des données : '.$e->getMessage());
+            $this->addFlash('danger', 'Erreur lors de la suppression des données : ' . $e->getMessage());
         }
 
         return $this->redirectToRoute('data_generator_index');
@@ -115,7 +115,7 @@ class DataGeneratorController extends AbstractController
             if ($user->isSuperAdmin()) {
                 continue;
             }
-            $usersChoices[$user->getSociete().' - '.$user->getEmail()] = $user->getId();
+            $usersChoices[$user->getSociete() . ' - ' . $user->getEmail()] = $user->getId();
         }
         $usersChoices['Tous les utilisateurs du cave'] = SendTestNotificationsHandler::ALL_TENANT_USERS_USER_ID;
 
@@ -166,7 +166,7 @@ class DataGeneratorController extends AbstractController
 
                     return $this->redirectToRoute('data_generator_notification', status: 303);
                 } catch (\Throwable $e) {
-                    $this->addFlash('danger', 'Erreur lors de l\'envoi : '.$e->getMessage());
+                    $this->addFlash('danger', 'Erreur lors de l\'envoi : ' . $e->getMessage());
                 }
             }
         }
@@ -194,10 +194,10 @@ class DataGeneratorController extends AbstractController
             'Choisir un utilisateur' => null,
         ];
         foreach ($users as $user) {
-            if ($user->isSuperAdmin()) {
+            if ($user->isAdmin()) {
                 continue;
             }
-            $usersChoices[$user->getSociete().' - '.$user->getEmail()] = $user->getId();
+            $usersChoices[$user->getSociete() . ' - ' . $user->getEmail()] = $user->getId();
         }
         $usersChoices['Tous les exploitants du cave'] = SendTestNotificationsHandler::ALL_TENANT_USERS_USER_ID;
 
@@ -235,7 +235,7 @@ class DataGeneratorController extends AbstractController
                         $file = $ticketGeneratorHandler->handle((int) $selectedUserId, $cave);
                     }
                 } catch (\Exception $e) {
-                    $this->addFlash('danger', 'Erreur lors de la génération du ticket : '.$e->getMessage());
+                    $this->addFlash('danger', 'Erreur lors de la génération du ticket : ' . $e->getMessage());
 
                     return $this->redirectToRoute('data_generator_ticket_generator');
                 }
