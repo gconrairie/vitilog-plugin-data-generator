@@ -190,11 +190,12 @@ class DataGeneratorController extends AbstractController
         }
 
         $users = $userRepository->findAllForCave($cave);
+
         $usersChoices = [
             'Choisir un utilisateur' => null,
         ];
         foreach ($users as $user) {
-            if ($user->isSuperAdmin()) {
+            if ($user->isSuperAdmin() || $user->isAdmin()) {
                 continue;
             }
             $usersChoices[$user->getSociete().' - '.$user->getEmail()] = $user->getId();
