@@ -190,6 +190,7 @@ class DataGeneratorController extends AbstractController
         }
 
         $users = $userRepository->findAllForCave($cave);
+
         $usersChoices = [
             'Choisir un utilisateur' => null,
         ];

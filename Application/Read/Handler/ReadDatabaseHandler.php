@@ -8,6 +8,7 @@ use App\Modules\Apport\Domain\Apport;
 use App\Modules\Cave\Domain\Cave;
 use App\Modules\Convocation\Domain\Convocation;
 use App\Modules\Event\Domain\Event;
+use App\Modules\Inscription\Domain\Inscription;
 use App\Modules\Notification\Domain\Message\EmailMessage;
 use App\Modules\Notification\Domain\Message\SmsMessage;
 use App\Modules\Notification\Domain\Notification;
@@ -38,6 +39,7 @@ class ReadDatabaseHandler
 
         $totalEvents = $this->entityManager->getRepository(Event::class)->count(['cave' => $cave]);
         $totalConvocations = $this->entityManager->getRepository(Convocation::class)->count(['cave' => $cave]);
+        $totalInscriptions = $this->entityManager->getRepository(Inscription::class)->count(['cave' => $cave]);
         $totalApports = $this->entityManager->getRepository(Apport::class)->count(['cave' => $cave]);
 
         $totalNotifications = $this->entityManager->getRepository(Notification::class)->count(['cave' => $cave]);
@@ -56,6 +58,7 @@ class ReadDatabaseHandler
 
             'events' => $totalEvents,
             'convocations' => $totalConvocations,
+            'inscriptions' => $totalInscriptions,
             'apports' => $totalApports,
 
             'notifications' => $totalNotifications,
