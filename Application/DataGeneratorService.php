@@ -8,6 +8,7 @@ use App\Modules\Cave\Domain\Cave;
 use App\Plugins\DataGenerator\Application\Read\Dto\DataGenerationDtoMapper;
 use App\Plugins\DataGenerator\Application\Write\Handler\CreateCalendarEventsHandler;
 use App\Plugins\DataGenerator\Application\Write\Handler\CreateConvocationHandler;
+use App\Plugins\DataGenerator\Application\Write\Handler\CreateInscriptionHandler;
 use App\Plugins\DataGenerator\Application\Write\Handler\CreateParcellesHandler;
 use App\Plugins\DataGenerator\Application\Write\Handler\CreateProductionHandler;
 use App\Plugins\DataGenerator\Application\Write\Handler\CreateUserHandler;
@@ -20,6 +21,7 @@ final class DataGeneratorService
         private readonly CreateParcellesHandler $createParcellesHandler,
         private readonly CreateProductionHandler $createProductionHandler,
         private readonly CreateConvocationHandler $createConvocationHandler,
+        private readonly CreateInscriptionHandler $createInscriptionHandler,
         private readonly CreateCalendarEventsHandler $createCalendarEventsHandler,
     ) {
     }
@@ -37,6 +39,7 @@ final class DataGeneratorService
         $response['parcelles'] = $this->createParcellesHandler->handle($dto);
         $response['productions'] = $this->createProductionHandler->handle($dto);
         $response['convocations'] = $this->createConvocationHandler->handle($dto);
+        $response['inscriptions'] = $this->createInscriptionHandler->handle($dto);
         $response['calendarEvents'] = $this->createCalendarEventsHandler->handle($dto);
 
         return $response;

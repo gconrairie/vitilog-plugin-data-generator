@@ -25,6 +25,9 @@ class DataGenerationDtoMapper
             convocation: $data['convocation'] ?? false,
             acceptConvocation: $data['accept'] ?? false,
             dateConvocation: $data['date'] ?? null,
+            inscription: $data['inscription'] ?? false,
+            sendInscriptionRequest: $data['inscriptionRequest'] ?? false,
+            acceptInscription: $data['acceptInscription'] ?? false,
             events: $data['events'] ?? false,
             passed: $data['passed'] ?? false,
         );

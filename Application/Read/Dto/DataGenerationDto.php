@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Plugins\DataGenerator\Application\Read\Dto;
 
 use App\Modules\Cave\Domain\Cave;
+use App\Modules\Event\Domain\Event;
+use App\Modules\Inscription\Domain\Inscription;
 use App\Modules\Production\Domain\Production;
 use App\Modules\User\Domain\User;
 
@@ -29,6 +31,10 @@ class DataGenerationDto
         public bool $convocation = false,
         public bool $acceptConvocation = false,
         public ?\DateTime $dateConvocation = null,
+        // Inscription
+        public bool $inscription = false,
+        public bool $sendInscriptionRequest = false,
+        public bool $acceptInscription = false,
         // Options
         public bool $events = false,
         public bool $passed = false,
@@ -36,6 +42,11 @@ class DataGenerationDto
         public ?User $exploitant = null,
         public ?User $prestataire = null,
         public ?array $parcelles = [],
+        public ?Event $inscriptionEvent = null,
+        /**
+         * @var array<Inscription>
+         */
+        public array $inscriptions = [],
     ) {
     }
 }

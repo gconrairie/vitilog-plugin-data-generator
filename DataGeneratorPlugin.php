@@ -13,12 +13,12 @@ class DataGeneratorPlugin extends AbstractAdminPlugin
 
     public static function getVersion(): string
     {
-        return '1.0.0';
+        return '2.0.0';
     }
 
     public static function getAuthor(): string
     {
-        return 'Your Name';
+        return 'Agantar';
     }
 
     public static function getDescription(): string
@@ -33,11 +33,16 @@ class DataGeneratorPlugin extends AbstractAdminPlugin
 
     public static function getMenuIcon(): string
     {
-        return 'fas fa-dice-five';
+        return 'fas fa-square-plus';
     }
 
     public static function getMenuRoute(): string
     {
         return 'data_generator_index';
+    }
+
+    public static function getMenuSlug(): string
+    {
+        return 'data-generator';
     }
 }

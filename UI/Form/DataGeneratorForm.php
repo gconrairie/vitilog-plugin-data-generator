@@ -21,7 +21,8 @@ class DataGeneratorForm
         private UserRepository $userRepository,
         private EntityManagerInterface $entityManager,
         private CaveContext $caveContext,
-    ) {}
+    ) {
+    }
 
     public function buildForm(): FormInterface
     {
@@ -173,6 +174,32 @@ class DataGeneratorForm
                 ],
             ])
 
+            // Inscription
+            ->add('inscription', SwitchType::class, [
+                'label' => 'Inscription',
+                'attr' => [
+                    'data-control' => 'dg-fixture',
+                    'data-field' => 'inscription',
+                ],
+                'required' => false,
+            ])
+            ->add('inscriptionRequest', SwitchType::class, [
+                'label' => 'Demande envoyée',
+                'attr' => [
+                    'data-control' => 'dg-fixture',
+                    'data-field' => 'inscription-request',
+                ],
+                'required' => false,
+            ])
+            ->add('acceptInscription', SwitchType::class, [
+                'label' => 'Acceptée',
+                'attr' => [
+                    'data-control' => 'dg-fixture',
+                    'data-field' => 'accept-inscription',
+                ],
+                'required' => false,
+            ])
+
             // Options
             ->add('events', SwitchType::class, [
                 'label' => 'Générer un calendrier d\'apports',
@@ -183,7 +210,7 @@ class DataGeneratorForm
                 ],
             ])
             ->add('passed', SwitchType::class, [
-                'label' => 'Générer des données passées (' . (new \DateTime())->modify('-1 year')->format('Y') . ')',
+                'label' => 'Générer des données passées ('.(new \DateTime())->modify('-1 year')->format('Y').')',
                 'required' => false,
                 'attr' => [
                     'data-control' => 'dg-fixture',

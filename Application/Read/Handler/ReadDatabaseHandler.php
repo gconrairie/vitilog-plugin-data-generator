@@ -25,13 +25,14 @@ class ReadDatabaseHandler
         private readonly EntityManagerInterface $entityManager,
         private readonly UserRepository $userRepository,
         private readonly PrelevementRepository $prelevementRepository,
-    ) {}
+    ) {
+    }
 
     public function handle(Cave $cave): array
     {
         $totalUsers = $this->userRepository->findAllForCave($cave);
-        $totalExploitant = count(array_filter($totalUsers, fn(User $user) => in_array('ROLE_EXPLOITANT', $user->getRoles(), true)));
-        $totalPrestataire = count(array_filter($totalUsers, fn(User $user) => in_array('ROLE_PRESTATAIRE', $user->getRoles(), true)));
+        $totalExploitant = count(array_filter($totalUsers, fn (User $user) => in_array('ROLE_EXPLOITANT', $user->getRoles(), true)));
+        $totalPrestataire = count(array_filter($totalUsers, fn (User $user) => in_array('ROLE_PRESTATAIRE', $user->getRoles(), true)));
 
         $totalParcels = $this->entityManager->getRepository(Parcelle::class)->count(['cave' => $cave]);
         $totalProductions = $this->entityManager->getRepository(Production::class)->count(['cave' => $cave]);

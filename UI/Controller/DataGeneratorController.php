@@ -23,7 +23,7 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/admin/plugin/data-generator', name: 'data_generator_')]
 class DataGeneratorController extends AbstractController
 {
-    #[Route('/', name: 'index')]
+    #[Route('', name: 'index')]
     public function index(
         Request $request,
         DataGeneratorService $dataGeneratorService,
@@ -45,7 +45,6 @@ class DataGeneratorController extends AbstractController
 
             try {
                 $response = $dataGeneratorService->handleForm($data, $cave);
-
                 $messages = [];
                 foreach ($response as $item) {
                     if (!is_array($item)) {
@@ -75,7 +74,8 @@ class DataGeneratorController extends AbstractController
         return $this->render(
             '@DataGenerator/index.html.twig',
             [
-                'form' => $form,
+                'generator_form' => $form,
+
                 'counters' => $counters,
             ]
         );

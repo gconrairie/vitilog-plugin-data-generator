@@ -1,4 +1,4 @@
-{% extends 'layout.html.twig' %}
+{% extends '@DataGenerator/layout_plugin.html.twig' %}
 
 {% block page_back_url %}
 	{{ path('data_generator_index') }}
@@ -17,16 +17,16 @@
 {% endblock %}
 
 {% block main %}
-	<section class="rounded-xl border border-slate-200 bg-white shadow-sm p-6 max-w-2xl w-fit">
+	<section class="dg-panel">
 		{{ form_start(form, { attr: { 'data-turbo': 'false' } }) }}
-		{{form_row(form.user)}}
-		{{form_row(form.number)}}
+		{{ form_row(form.user) }}
+		{{ form_row(form.number) }}
 
-		<button class="btn btn-primary mt-2">
-			<i class="fas fa-paper-plane mr-2"></i>
+		<button type="submit" class="btn btn-primary dg-submit">
+			<i class="fas fa-paper-plane"></i>
 			Envoyer les notifications
 		</button>
 
-		{{form_end(form)}}
+		{{ form_end(form) }}
 	</section>
 {% endblock %}

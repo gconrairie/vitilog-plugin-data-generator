@@ -25,6 +25,9 @@ function toggleField(field) {
     const prelevementField = document.querySelector('[data-field="prelevement"]');
     const convocationField = document.querySelector('[data-field="convocation"]');
     const acceptField = document.querySelector('[data-field="accept"]');
+    const inscriptionField = document.querySelector('[data-field="inscription"]');
+    const inscriptionRequestField = document.querySelector('[data-field="inscription-request"]');
+    const acceptInscriptionField = document.querySelector('[data-field="accept-inscription"]');
 
     switch (targetName) {
         case 'production':
@@ -32,6 +35,9 @@ function toggleField(field) {
                 prelevementField.checked = false;
                 convocationField.checked = false;
                 acceptField.checked = false;
+                inscriptionField.checked = false;
+                inscriptionRequestField.checked = false;
+                acceptInscriptionField.checked = false;
             }
         break;
 
@@ -52,6 +58,35 @@ function toggleField(field) {
             if (target.checked) {
                 productionField.checked = true;
                 convocationField.checked = true;
+            }
+        break;
+
+        case 'inscription':
+            if (target.checked) {
+                productionField.checked = true;
+                prelevementField.checked = true;
+            } else {
+                inscriptionRequestField.checked = false;
+                acceptInscriptionField.checked = false;
+            }
+        break;
+
+        case 'inscription-request':
+            if (target.checked) {
+                productionField.checked = true;
+                prelevementField.checked = true;
+                inscriptionField.checked = true;
+            } else {
+                acceptInscriptionField.checked = false;
+            }
+        break;
+
+        case 'accept-inscription':
+            if (target.checked) {
+                productionField.checked = true;
+                prelevementField.checked = true;
+                inscriptionField.checked = true;
+                inscriptionRequestField.checked = true;
             }
         break;
     }
