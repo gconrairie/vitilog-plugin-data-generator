@@ -35,8 +35,7 @@ final class CreateProductionHandler extends AbstractNullableDtoHandler
         $annee = $dto->passed ? $year - 1 : $year;
 
         foreach ($dto->parcelles as $parcelle) {
-            $superficieHa = $parcelle->getSuperficieHa();
-            $qteEstimeeTonnes = $this->tonnesHectareConverter($superficieHa);
+            $qteEstimeeTonnes = $this->tonnesHectareConverter($parcelle->getSuperficie());
 
             $dto->productions[] = $this->createProductionHandler->handle(
                 new ProductionCreateDto(
