@@ -42,7 +42,7 @@ final class CreateCalendarEventsHandler extends AbstractNullableDtoHandler
                 dto: new EventCreateDto(
                     date: $date,
                     title: 'Événement généré par le plugin DataGenerator',
-                    cepageIds: [(int) $cepage->getId()],
+                    cepageId: (int) $cepage->getId(),
                     published: true,
                     rose: false,
                     comment: 'Événement généré par le plugin DataGenerator',

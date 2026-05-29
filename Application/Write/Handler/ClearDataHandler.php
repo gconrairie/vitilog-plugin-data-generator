@@ -31,7 +31,8 @@ class ClearDataHandler
         $this->em->createQuery("DELETE FROM App\Modules\Apport\Domain\Apport e WHERE e.cave = :cave")->setParameter('cave', $cave)->execute();
         $this->em->createQuery("DELETE FROM App\Modules\Ticket\Domain\TicketImport e WHERE e.cave = :cave")->setParameter('cave', $cave)->execute();
 
-        // Convocations
+        // Convocations, Inscriptions, Schedule change requests
+        $this->em->createQuery("DELETE FROM App\Modules\ScheduleChange\Domain\ScheduleChange e WHERE e.cave = :cave")->setParameter('cave', $cave)->execute();
         $this->em->createQuery("DELETE FROM App\Modules\Inscription\Domain\Inscription e WHERE e.cave = :cave")->setParameter('cave', $cave)->execute();
         $this->em->createQuery("DELETE FROM App\Modules\Convocation\Domain\Convocation e WHERE e.cave = :cave")->setParameter('cave', $cave)->execute();
         // Productions et prelevements

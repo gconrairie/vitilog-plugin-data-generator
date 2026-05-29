@@ -58,7 +58,7 @@ final class CreateConvocationHandler extends AbstractNullableDtoHandler
                     heureDebut: $heureDebut,
                     heureFin: $heureFin,
                     quantiteDemandeeTonnes: (float) (($production->getQuantiteEstimeeKg() ?? 0) / 1000),
-                    quai: (string) random_int(1, 10),
+                    lieuLivraison: 'Quai '.random_int(1, 10),
                 ),
             );
 

@@ -51,7 +51,7 @@ final class CreateInscriptionHandler
                 openAt: $heureDebut,
                 closeAt: $heureFin,
                 inscription: true,
-                cepageIds: [(int) $cepage->getId()],
+                cepageId: (int) $cepage->getId(),
                 comment: 'Événement d\'inscription généré par le plugin DataGenerator',
                 info: null,
             ),
@@ -87,7 +87,7 @@ final class CreateInscriptionHandler
         $this->confirmInscriptionHandler->handle(
             $inscription,
             new ConfirmInscriptionDto(
-                quai: (string) random_int(1, 10),
+                lieuLivraison: 'Quai '.random_int(1, 10),
                 heureDebut: $heureDebut,
                 heureFin: $heureFin,
                 quantiteDemandeeTonnes: (float) (($production->getQuantiteEstimeeKg() ?? 0) / 1000),

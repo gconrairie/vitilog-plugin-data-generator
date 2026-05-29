@@ -19,9 +19,6 @@
 {% endblock %}
 
 {% block page_action %}
-	<a href="{{ path('data_generator_notification') }}" class="btn btn-secondary small">
-		<i class="fas fa-paper-plane"></i>
-		Générer des notifications</a>
 	<a href="{{ path('data_generator_ticket_generator') }}" class="btn btn-secondary small">
 		<i class="fas fa-ticket"></i>
 		Générer un ticket</a>
@@ -33,100 +30,85 @@
 {% block main %}
 	{% include "@DataGenerator/components/db_snapshot.html.twig" with { counters: counters } %}
 
-	<div class="sidebar-right">
+	<div class="generator-form">
+		{{ form_start(generator_form, { attr: { 'data-turbo': 'false' } }) }}
 
-		<div class="generator-form">
-			{{ form_start(generator_form, { attr: { 'data-turbo': 'false' } }) }}
+		<div class="dg-form-grid">
+			<section class="dg-card">
+				<h3 class="text-slate-500 text-lg font-semibold col-span-2 pb-2 border-b border-slate-200 mb-3">
+					<i class="fas fa-user pr-1"></i>
+					Exploitant
+				</h3>
+				{{form_row(generator_form.exploitant)}}
+				{{form_row(generator_form.email)}}
+				{{form_row(generator_form.isPrestataire)}}
+			</section>
 
-			<div class="dg-form-grid">
-				<section class="dg-card">
-					<h3 class="text-slate-500 text-lg font-semibold col-span-2 pb-2 border-b border-slate-200 mb-3">
-						<i class="fas fa-user pr-1"></i>
-						Exploitant
-					</h3>
-					{{form_row(generator_form.exploitant)}}
-					{{form_row(generator_form.email)}}
-					{{form_row(generator_form.isPrestataire)}}
-				</section>
+			<section class="dg-card">
+				<h3 class="text-slate-500 text-lg font-semibold col-span-2 pb-2 border-b border-slate-200 mb-3">
+					<i class="fas fa-user pr-1"></i>
+					Prestataire
+				</h3>
+				{{form_row(generator_form.prestataire)}}
+				{{form_row(generator_form.emailPrestataire)}}
+			</section>
 
-				<section class="dg-card">
-					<h3 class="text-slate-500 text-lg font-semibold col-span-2 pb-2 border-b border-slate-200 mb-3">
-						<i class="fas fa-user pr-1"></i>
-						Prestataire
-					</h3>
-					{{form_row(generator_form.prestataire)}}
-					{{form_row(generator_form.emailPrestataire)}}
-				</section>
+			<section class="dg-card">
+				<h3 class="text-slate-500 text-lg font-semibold col-span-2 pb-2 border-b border-slate-200 mb-3">
+					<i class="fas fa-seedling pr-1"></i>
+					Parcelles
+				</h3>
 
-				<section class="dg-card">
-					<h3 class="text-slate-500 text-lg font-semibold col-span-2 pb-2 border-b border-slate-200 mb-3">
-						<i class="fas fa-seedling pr-1"></i>
-						Parcelles
-					</h3>
+				{{form_row(generator_form.parcelles)}}
+				{{form_row(generator_form.cepages)}}
+			</section>
 
-					{{form_row(generator_form.parcelles)}}
-					{{form_row(generator_form.cepages)}}
-				</section>
+			<section class="dg-card">
+				<h3 class="text-slate-500 text-lg font-semibold col-span-2 pb-2 border-b border-slate-200 mb-3">
+					<i class="fas fa-tractor"></i>
+					Production</h3>
 
-				<section class="dg-card">
-					<h3 class="text-slate-500 text-lg font-semibold col-span-2 pb-2 border-b border-slate-200 mb-3">
-						<i class="fas fa-tractor"></i>
-						Production</h3>
+				{{form_row(generator_form.production)}}
+				{{form_row(generator_form.prelevement)}}
+			</section>
 
-					{{form_row(generator_form.production)}}
-					{{form_row(generator_form.prelevement)}}
-				</section>
+			<section class="p-3 pt-1 border rounded-md bg-white border-slate-200">
+				<h3 class="text-slate-500 text-lg font-semibold col-span-2 pb-2 border-b border-slate-200 mb-3">
+					<i class="fas fa-comment"></i>
+					Convocation</h3>
 
-				<section class="p-3 pt-1 border rounded-md bg-white border-slate-200">
-					<h3 class="text-slate-500 text-lg font-semibold col-span-2 pb-2 border-b border-slate-200 mb-3">
-						<i class="fas fa-comment"></i>
-						Convocation</h3>
+				{{form_row(generator_form.convocation)}}
+				{{form_row(generator_form.accept)}}
 
-					{{form_row(generator_form.convocation)}}
-					{{form_row(generator_form.accept)}}
+				{{form_row(generator_form.date)}}
+			</section>
 
-					{{form_row(generator_form.date)}}
-				</section>
+			<section class="dg-card">
+				<h3 class="text-slate-500 text-lg font-semibold col-span-2 pb-2 border-b border-slate-200 mb-3">
+					<i class="fas fa-clipboard-list"></i>
+					Inscription</h3>
 
-				<section class="dg-card">
-					<h3 class="text-slate-500 text-lg font-semibold col-span-2 pb-2 border-b border-slate-200 mb-3">
-						<i class="fas fa-clipboard-list"></i>
-						Inscription</h3>
+				{{form_row(generator_form.inscription)}}
+				{{form_row(generator_form.inscriptionRequest)}}
+				{{form_row(generator_form.acceptInscription)}}
+			</section>
 
-					{{form_row(generator_form.inscription)}}
-					{{form_row(generator_form.inscriptionRequest)}}
-					{{form_row(generator_form.acceptInscription)}}
-				</section>
+			<section class="dg-card">
+				<h3 class="text-slate-500 text-lg font-semibold col-span-2 pb-2 border-b	 border-slate-200 mb-3">
+					<i class="fas fa-gear"></i>
+					Options</h3>
 
-				<section class="dg-card">
-					<h3 class="text-slate-500 text-lg font-semibold col-span-2 pb-2 border-b	 border-slate-200 mb-3">
-						<i class="fas fa-gear"></i>
-						Options</h3>
-
-					{{form_row(generator_form.events)}}
-					{{form_row(generator_form.passed)}}
-				</section>
-			</div>
-
-			<button class="btn btn-primary mt-3">
-				<i class="fas fa-wand-magic-sparkles"></i>
-				Générer les données</button>
-
-			{{form_end(generator_form)}}
+				{{form_row(generator_form.events)}}
+				{{form_row(generator_form.passed)}}
+			</section>
 		</div>
 
-		<div class="sidebar">
+		<button class="btn btn-primary mt-3">
+			<i class="fas fa-wand-magic-sparkles"></i>
+			Générer les données</button>
 
-			{% embed "components/ui/sidebar_container.html.twig" with {
-				title: 'Notifications',
-			} %}
-				{% block content %}
-					<p>Contenu de la sidebar</p>
-				{% endblock %}
-			{% endembed %}
+		{{form_end(generator_form)}}
 
-		
-		</div>
 
 	</div>
 

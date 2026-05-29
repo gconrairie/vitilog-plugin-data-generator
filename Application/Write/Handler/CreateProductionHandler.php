@@ -12,11 +12,12 @@ use App\Plugins\DataGenerator\Application\Read\Dto\DataGenerationDto;
 
 final class CreateProductionHandler extends AbstractNullableDtoHandler
 {
+    private const T_HA_RATIO = 10.5;
+
     public function __construct(
         private readonly ModuleCreateProductionHandler $createProductionHandler,
         private readonly CreatePrelevementHandler $createPrelevementHandler,
-    ) {
-    }
+    ) {}
 
     public function handle(DataGenerationDto $dto): ?array
     {
@@ -34,8 +35,8 @@ final class CreateProductionHandler extends AbstractNullableDtoHandler
         $annee = $dto->passed ? $year - 1 : $year;
 
         foreach ($dto->parcelles as $parcelle) {
-            $superficie = (int) $parcelle->getSuperficie();
-            $qteEstimeeTonnes = max(0.1, ($superficie / 1000) / 0.002 / 1000); // approx. legacy logic
+            $superficieHa = $parcelle->getSuperficieHa();
+            $qteEstimeeTonnes = $this->tonnesHectareConverter($superficieHa);
 
             $dto->productions[] = $this->createProductionHandler->handle(
                 new ProductionCreateDto(
@@ -54,7 +55,7 @@ final class CreateProductionHandler extends AbstractNullableDtoHandler
                 }
 
                 for ($i = 0; $i < 3; ++$i) {
-                    $date = $start->modify('+'.($i * 4).' days');
+                    $date = $start->modify('+' . ($i * 4) . ' days');
                     $degre = round(6 + (mt_rand() / mt_getrandmax()) * (15 - 6), 1);
 
                     $this->createPrelevementHandler->handle(
@@ -71,5 +72,13 @@ final class CreateProductionHandler extends AbstractNullableDtoHandler
         return [
             'productions' => sprintf('Création de %d production(s)', count($dto->productions)),
         ];
+    }
+
+    private function tonnesHectareConverter(int $superficie): float
+    {
+        $superficieHa = $superficie / 10000; // Convertir m² en hectares
+        $qteEstimeeTonnes = $superficieHa * self::T_HA_RATIO;
+        // approx. legacy logic
+        return max(0.1, $qteEstimeeTonnes);
     }
 }
