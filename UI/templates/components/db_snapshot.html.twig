@@ -1,42 +1,39 @@
-<section class="dg-db-snapshot">
+<section class="dg-db-snapshot w-fit">
 	<h3 class="dg-db-snapshot__title">
 		<i class="fas fa-chart-simple" aria-hidden="true"></i>
-		Compteurs en base
+		Etat de la base de données au
+		{{ "now"|date("d/m/Y H:i") }}
 	</h3>
 	<div class="dg-db-snapshot__scroll">
 		<table>
 			<thead>
 				<tr>
-					<th scope="col">Cave</th>
-					<th scope="col">Exploitants</th>
-					<th scope="col">Prestataires</th>
-					<th scope="col">Parcelles</th>
-					<th scope="col">Productions</th>
-					<th scope="col">Prélèvements</th>
-					<th scope="col">Events</th>
-					<th scope="col">Convocations</th>
-					<th scope="col">Inscriptions</th>
-					<th scope="col">Apports</th>
-					<th scope="col">Notifications</th>
-					<th scope="col">Email</th>
-					<th scope="col">SMS</th>
+					<th class="px-3" scope="col">Cave</th>
+					<th class="px-3" scope="col">Exploitants</th>
+					<th class="px-3" scope="col">Prestataires</th>
+					<th class="px-3" scope="col">Parcelles</th>
+					<th class="px-3" scope="col">Productions</th>
+					<th class="px-3" scope="col">Prélèvements</th>
+					<th class="px-3" scope="col">Events</th>
+					<th class="px-3" scope="col">Convocations</th>
+					<th class="px-3" scope="col">Inscriptions</th>
+					<th class="px-3" scope="col">Apports</th>
+					<th class="px-3" scope="col">Notifications</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr>
-					<td>{{ cave.name }}</td>
-					<td>{{ counters.exploitants }}</td>
-					<td>{{ counters.prestataires }}</td>
-					<td>{{ counters.parcelles }}</td>
-					<td>{{ counters.productions }}</td>
-					<td>{{ counters.prelevements }}</td>
-					<td>{{ counters.events }}</td>
-					<td>{{ counters.convocations }}</td>
-					<td>{{ counters.inscriptions }}</td>
-					<td>{{ counters.apports }}</td>
-					<td>{{ counters.notifications }}</td>
-					<td>{{ counters.emailMessages }}</td>
-					<td>{{ counters.smsMessages }}</td>
+					<td class="px-2">{{ cave.name }}</td>
+					<td class="px-2">{{ counters.exploitants }}</td>
+					<td class="px-2">{{ counters.prestataires }}</td>
+					<td class="px-2">{{ counters.parcelles }}</td>
+					<td class="px-2">{{ counters.productions }}</td>
+					<td class="px-2">{{ counters.prelevements }}</td>
+					<td class="px-2">{{ counters.events }}</td>
+					<td class="px-2">{{ counters.convocations }}</td>
+					<td class="px-2">{{ counters.inscriptions }}</td>
+					<td class="px-2">{{ counters.apports }}</td>
+					<td class="px-2">{{ counters.notifications }}</td>
 				</tr>
 			</tbody>
 		</table>

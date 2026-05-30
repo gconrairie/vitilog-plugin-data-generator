@@ -19,12 +19,12 @@
 {% endblock %}
 
 {% block page_action %}
-	<a href="{{ path('data_generator_ticket_generator') }}" class="btn btn-secondary small">
+	<a href="{{ path('data_generator_ticket_generator') }}" class="btn btn-secondary small" data-turbo="false">
 		<i class="fas fa-ticket"></i>
-		Générer un ticket</a>
-	<a href="{{ path('data_generator_clear') }}" class="btn btn-danger small" onclick="confirm('Êtes-vous sûr de vouloir supprimer les données générées ?')">
+		Générer les tickets d'apports</a>
+	<button type="button" class="btn btn-danger small" data-action="click->modal#openFromEvent" data-modal-form-id="delete-data-generator" data-modal-title="Supprimer les données générées ?" data-modal-body="Cette action supprimera toutes les données générées. Êtes-vous sûr de vouloir continuer ? Cette action est irréversible." data-modal-confirm-label="Effacer" data-modal-confirm-class="bg-red-600 hover:bg-red-700 focus:ring-red-500">
 		<i class="fas fa-triangle-exclamation"></i>
-		Effacer les données générées</a>
+		Effacer les données générées</button>
 {% endblock %}
 
 {% block main %}
@@ -72,7 +72,7 @@
 				{{form_row(generator_form.prelevement)}}
 			</section>
 
-			<section class="p-3 pt-1 border rounded-md bg-white border-slate-200">
+			<section class="dg-card">
 				<h3 class="text-slate-500 text-lg font-semibold col-span-2 pb-2 border-b border-slate-200 mb-3">
 					<i class="fas fa-comment"></i>
 					Convocation</h3>
@@ -111,5 +111,10 @@
 
 
 	</div>
+
+	{# Formulaire caché pour la suppression des données #}
+	<form id="delete-data-generator" action="{{ path('data_generator_clear') }}" method="POST" style="display: none;">
+		<input type="hidden" name="_method" value="DELETE">
+	</form>
 
 {% endblock %}

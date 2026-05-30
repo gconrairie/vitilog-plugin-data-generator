@@ -7,8 +7,8 @@ namespace App\Plugins\DataGenerator\Application\Write\Handler;
 use App\Modules\Cepage\Infrastructure\Repository\CepageRepository;
 use App\Modules\Parcelle\Application\Write\Dto\ParcelleCreateDto;
 use App\Modules\Parcelle\Application\Write\Handler\CreateParcelleHandler;
-use App\Plugins\DataGenerator\Application\Read\Dto\DataGenerationDto;
 use App\Modules\Parcelle\Infrastructure\Repository\ParcelleRepository;
+use App\Plugins\DataGenerator\Application\Read\Dto\DataGenerationDto;
 use Faker\Factory as Faker;
 
 final class CreateParcellesHandler extends AbstractNullableDtoHandler
@@ -19,7 +19,8 @@ final class CreateParcellesHandler extends AbstractNullableDtoHandler
         private readonly CepageRepository $cepageRepository,
         private readonly CreateParcelleHandler $createParcelleHandler,
         private readonly ParcelleRepository $parcelleRepository,
-    ) {}
+    ) {
+    }
 
     public function handle(DataGenerationDto $dto): ?array
     {
@@ -57,7 +58,7 @@ final class CreateParcellesHandler extends AbstractNullableDtoHandler
 
         for ($i = 0; $i < $dto->nParcelles; ++$i) {
             $cepage = $selectedCepage ?? $cepagesPool[array_rand($cepagesPool)];
-            $numero = strtoupper(substr($cepage->getNom(), 0, 2)) . ' ' . str_pad((string) ($p++), 3, '0', STR_PAD_LEFT);
+            $numero = strtoupper(substr($cepage->getNom(), 0, 2)).' '.str_pad((string) ($p++), 3, '0', STR_PAD_LEFT);
 
             $parcelle = $this->createParcelleHandler->handle(
                 cave: $dto->cave,

@@ -3,7 +3,9 @@
 namespace App\Plugins\DataGenerator\Application\Write\Handler;
 
 use App\Modules\Cave\Domain\Cave;
+use App\Modules\Convocation\Domain\Convocation;
 use App\Modules\Convocation\Domain\Enum\ConvocationResponse;
+use App\Modules\Convocation\Domain\Enum\ConvocationStatus;
 use App\Modules\Convocation\Infrastructure\Repository\ConvocationRepository;
 use App\Modules\User\Infrastructure\Repository\UserRepository;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -27,34 +29,7 @@ class TicketGeneratorHandler
     /**
      * @return array{path: string, filename: string}|null
      */
-    public function handle(int $userId, Cave $cave): ?array
-    {
-        $this->ticketData = [];
-
-        $convocations = $this->findConvocations($userId, $cave);
-        if (empty($convocations)) {
-            return null;
-        }
-
-        $this->parseConvocations($convocations, 0);
-
-        if (empty($this->ticketData)) {
-            return null;
-        }
-
-        try {
-            return $this->createTicketFile();
-        } catch (\Exception $e) {
-            return null;
-        }
-    }
-
-    /**
-     * @param list<int> $userIds
-     *
-     * @return array{path: string, filename: string}|null
-     */
-    public function handleAllUsers(Cave $cave, array $userIds): ?array
+    public function handle(Cave $cave, array $userIds): ?array
     {
         $this->ticketData = [];
         $lastLineNumber = 0;
@@ -62,13 +37,17 @@ class TicketGeneratorHandler
         foreach ($userIds as $userId) {
             try {
                 $convocations = $this->findConvocations((int) $userId, $cave);
+                $deliverable = array_filter($convocations, function (Convocation $convocation) {
+                    return ConvocationStatus::PENDING == $convocation->getStatus()
+                        && ConvocationResponse::ACCEPTED == $convocation->getResponseStatus();
+                });
             } catch (\Exception) {
                 continue;
             }
-            if (empty($convocations)) {
+            if (empty($deliverable)) {
                 continue;
             }
-            $lastLineNumber = $this->parseConvocations($convocations, $lastLineNumber);
+            $lastLineNumber = $this->parseConvocations($deliverable, $lastLineNumber);
         }
 
         if (empty($this->ticketData)) {

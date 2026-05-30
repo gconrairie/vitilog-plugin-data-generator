@@ -17,7 +17,8 @@ final class CreateProductionHandler extends AbstractNullableDtoHandler
     public function __construct(
         private readonly ModuleCreateProductionHandler $createProductionHandler,
         private readonly CreatePrelevementHandler $createPrelevementHandler,
-    ) {}
+    ) {
+    }
 
     public function handle(DataGenerationDto $dto): ?array
     {
@@ -54,7 +55,7 @@ final class CreateProductionHandler extends AbstractNullableDtoHandler
                 }
 
                 for ($i = 0; $i < 3; ++$i) {
-                    $date = $start->modify('+' . ($i * 4) . ' days');
+                    $date = $start->modify('+'.($i * 4).' days');
                     $degre = round(6 + (mt_rand() / mt_getrandmax()) * (15 - 6), 1);
 
                     $this->createPrelevementHandler->handle(
@@ -77,6 +78,7 @@ final class CreateProductionHandler extends AbstractNullableDtoHandler
     {
         $superficieHa = $superficie / 10000; // Convertir m² en hectares
         $qteEstimeeTonnes = $superficieHa * self::T_HA_RATIO;
+
         // approx. legacy logic
         return max(0.1, $qteEstimeeTonnes);
     }

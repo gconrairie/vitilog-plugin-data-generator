@@ -12,9 +12,7 @@ use App\Plugins\DataGenerator\Application\Write\Handler\TicketGeneratorHandler;
 use App\Plugins\DataGenerator\UI\Form\DataGeneratorForm;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormError;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
@@ -95,95 +93,49 @@ class DataGeneratorController extends AbstractController
         return $this->redirectToRoute('data_generator_index');
     }
 
-
     #[Route('/ticket-generator', name: 'ticket_generator')]
     public function ticketGenerator(
-        Request $request,
         UserRepository $userRepository,
         CaveContext $caveContext,
         TicketGeneratorHandler $ticketGeneratorHandler,
     ): Response {
         $cave = $caveContext->getCave();
-        if (!$cave) {
-            throw new \LogicException('Cave not found');
-        }
-
         $users = $userRepository->findAllForCave($cave);
 
-        $usersChoices = [
-            'Choisir un utilisateur' => null,
-        ];
-        foreach ($users as $user) {
-            if ($user->isAdmin()) {
-                continue;
-            }
-            $usersChoices[$user->getSociete() . ' - ' . $user->getEmail()] = $user->getId();
-        }
-        $usersChoices['Tous les exploitants du cave'] = SendTestNotificationsHandler::ALL_TENANT_USERS_USER_ID;
+        $filteredUsers = array_filter($users, function ($user) {
+            return !$user->isAdmin() && !$user->isSuperAdmin();
+        });
 
-        $form = $this->createFormBuilder(null, [
-            'attr' => [
-                'data-turbo' => 'false',
-            ],
-        ])
-            ->add('user', ChoiceType::class, [
-                'label' => 'Générer un ticket pour',
-                'choices' => $usersChoices,
-                'required' => true,
-            ])
-            ->getForm();
+        $userIds = array_map(fn($user) => $user->getId(), $filteredUsers);
 
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-            $selectedUserId = $data['user'];
+        $file = null;
+        try {
+            $file = $ticketGeneratorHandler->handle($cave, $userIds);
+        } catch (\Exception $e) {
+            $this->addFlash('danger', 'Erreur lors de la génération des tickets : ' . $e->getMessage());
+            return $this->redirectToRoute('data_generator_index');
+        };
 
-            if (null === $selectedUserId) {
-                $form->get('user')->addError(new FormError('Veuillez sélectionner un utilisateur.'));
-            } else {
-                try {
-                    if (SendTestNotificationsHandler::ALL_TENANT_USERS_USER_ID === (int) $selectedUserId) {
-                        $caveUserIds = [];
-                        foreach ($users as $user) {
-                            if ($user->isSuperAdmin()) {
-                                continue;
-                            }
-                            $caveUserIds[] = $user->getId();
-                        }
-                        $file = $ticketGeneratorHandler->handleAllUsers($cave, $caveUserIds);
-                    } else {
-                        $file = $ticketGeneratorHandler->handle((int) $selectedUserId, $cave);
-                    }
-                } catch (\Exception $e) {
-                    $this->addFlash('danger', 'Erreur lors de la génération du ticket : ' . $e->getMessage());
-
-                    return $this->redirectToRoute('data_generator_ticket_generator');
-                }
-
-                if (null === $file) {
-                    $this->addFlash(
-                        'warning',
-                        SendTestNotificationsHandler::ALL_TENANT_USERS_USER_ID === (int) $selectedUserId
-                            ? 'Aucun ticket généré : aucune convocation acceptée trouvée pour les exploitants à la date du jour.'
-                            : 'Aucun ticket généré : convocation acceptée introuvable pour cet utilisateur à la date du jour.'
-                    );
-
-                    return $this->redirectToRoute('data_generator_ticket_generator', status: 303);
-                }
-
-                $response = new BinaryFileResponse($file['path']);
-                $response->setContentDisposition(
-                    ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-                    $file['filename']
+        if (null === $file) {
+            $this->addFlash(
+                'warning',
+                'Aucun ticket généré : aucune convocation acceptée trouvée pour les exploitants à la date du jour.'
+            );
+            return $this->redirectToRoute('data_generator_index');
+        } else {
+            try {
+                $response = $this->file(
+                    $file['path'],
+                    $file['filename'],
+                    ResponseHeaderBag::DISPOSITION_ATTACHMENT
                 );
                 $response->deleteFileAfterSend(true);
 
                 return $response;
+            } catch (\Exception $e) {
+                $this->addFlash('danger', 'Erreur lors de la préparation du téléchargement : ' . $e->getMessage());
+                return $this->redirectToRoute('data_generator_index');
             }
         }
-
-        return $this->render('@DataGenerator/ticket_generator.html.twig', [
-            'form' => $form,
-        ]);
     }
 }

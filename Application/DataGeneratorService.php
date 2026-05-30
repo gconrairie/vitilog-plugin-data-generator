@@ -35,7 +35,7 @@ final class DataGeneratorService
         $response = [];
         $response['exploitant'] = $this->createUserHandler->handleExploitant($dto);
         $response['prestataire'] = $this->createUserHandler->handlePrestataire($dto);
-        $response['parcelles'] = $this->createParcellesHandler->handle($dto, $cave);
+        $response['parcelles'] = $this->createParcellesHandler->handle($dto);
         $response['productions'] = $this->createProductionHandler->handle($dto);
         $response['convocations'] = $this->createConvocationHandler->handle($dto);
         $response['inscriptions'] = $this->createInscriptionHandler->handle($dto);

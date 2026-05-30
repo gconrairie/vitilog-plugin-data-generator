@@ -18,7 +18,7 @@ class ClearDataHandler
         private readonly CaveContext $caveContext,
         private readonly UserRepository $userRepository,
     ) {
-        $this->uploadsDir = $this->kernel->getProjectDir().'/uploads';
+        $this->uploadsDir = $this->kernel->getProjectDir() . '/uploads';
     }
 
     public function handle(): void
@@ -44,7 +44,7 @@ class ClearDataHandler
         $this->em->createQuery("DELETE FROM App\Modules\Notification\Domain\Notification e WHERE e.cave = :cave")->setParameter('cave', $cave)->execute();
         $this->em->createQuery("DELETE FROM App\Modules\Notification\Domain\Message\EmailMessage e WHERE e.cave = :cave")->setParameter('cave', $cave)->execute();
         $this->em->createQuery("DELETE FROM App\Modules\Notification\Domain\Message\InAppMessage e WHERE e.cave = :cave")->setParameter('cave', $cave)->execute();
-        $this->em->createQuery("DELETE FROM App\Modules\Notification\Domain\Message\SmsMessage e WHERE e.cave = :cave")->setParameter('cave', $cave)->execute();
+        $this->em->createQuery("DELETE FROM App\Modules\Notification\Domain\Message\SmsMessage e WHERE e.cave = :cave AND e.providerId = 'Test'")->setParameter('cave', $cave)->execute();
 
         // Events
         $this->em->createQuery("DELETE FROM App\Modules\Event\Domain\Event e WHERE e.cave = :cave")->setParameter('cave', $cave)->execute();
@@ -62,20 +62,20 @@ class ClearDataHandler
         $this->em->flush();
 
         // Remove all files in the uploads directory and subdirectories
-        if (file_exists($this->uploadsDir.'/'.$cave->getSlug())) {
-            $this->removeFiles($this->uploadsDir.'/'.$cave->getSlug());
+        if (file_exists($this->uploadsDir . '/' . $cave->getSlug())) {
+            $this->removeFiles($this->uploadsDir . '/' . $cave->getSlug());
         }
     }
 
     private function removeFiles(string $directory): void
     {
-        $files = glob($directory.'/*');
+        $files = glob($directory . '/*');
         foreach ($files as $file) {
             if (is_file($file)) {
                 unlink($file);
             }
         }
-        $subdirectories = glob($directory.'/*', GLOB_ONLYDIR);
+        $subdirectories = glob($directory . '/*', GLOB_ONLYDIR);
         foreach ($subdirectories as $subdirectory) {
             $this->removeFiles($subdirectory);
         }
