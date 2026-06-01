@@ -102,12 +102,12 @@ final class DemoRandomDataGenerator
 
     public function company(): string
     {
-        return self::COMPANY_PREFIXES[array_rand(self::COMPANY_PREFIXES)].' '.self::COMPANY_NAMES[array_rand(self::COMPANY_NAMES)];
+        return self::COMPANY_PREFIXES[array_rand(self::COMPANY_PREFIXES)] . ' ' . self::COMPANY_NAMES[array_rand(self::COMPANY_NAMES)];
     }
 
     public function mobilePhone(): string
     {
-        return '06'.str_pad((string) random_int(0, 99999999), 8, '0', STR_PAD_LEFT);
+        return ''; // '04' . str_pad((string) random_int(0, 99999999), 8, '0', STR_PAD_LEFT);
     }
 
     public function city(): string
