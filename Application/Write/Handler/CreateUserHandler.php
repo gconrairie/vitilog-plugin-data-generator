@@ -8,8 +8,8 @@ use App\Modules\User\Application\User\Write\Dto\UserWriteDto;
 use App\Modules\User\Application\User\Write\Handler\CreateUserHandler as ModuleCreateUserHandler;
 use App\Modules\User\Infrastructure\Repository\UserRepository;
 use App\Plugins\DataGenerator\Application\Read\Dto\DataGenerationDto;
+use App\Plugins\DataGenerator\Application\Write\DemoRandomDataGenerator;
 use App\Shared\Security\ActorContextProvider;
-use Faker\Factory as Faker;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 final class CreateUserHandler
@@ -19,6 +19,7 @@ final class CreateUserHandler
         private readonly ModuleCreateUserHandler $createUserHandler,
         private readonly ActorContextProvider $actorContextProvider,
         private readonly SluggerInterface $slugger,
+        private readonly DemoRandomDataGenerator $randomDataGenerator,
     ) {
     }
 
@@ -66,15 +67,12 @@ final class CreateUserHandler
 
     public function handle(DataGenerationDto $dto, int $userId, array $roles, ?string $email = null): ?array
     {
-        $faker = Faker::create('fr_FR');
-
-        $firstName = (string) $faker->firstName();
-        $lastName = (string) $faker->lastName();
-        $societe = (string) $faker->company();
+        $firstName = $this->randomDataGenerator->firstName();
+        $lastName = $this->randomDataGenerator->lastName();
+        $societe = $this->randomDataGenerator->company();
         $code = (string) random_int(1000, 9999);
         $email = $email ?? $this->slugger->slug($firstName.'.'.$lastName)->lower().'.'.$code.'@vitilog.fr';
-        // Crée un telephone mobile FR ()
-        $telephone = '06'.$faker->randomNumber(8, true);
+        $telephone = $this->randomDataGenerator->mobilePhone();
 
         $actorContext = $this->actorContextProvider->get();
         // $roles = $dto->isPrestataire ? ['ROLE_EXPLOITANT', 'ROLE_PRESTATAIRE'] : ['ROLE_EXPLOITANT'];

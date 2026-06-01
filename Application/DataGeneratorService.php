@@ -23,7 +23,8 @@ final class DataGeneratorService
         private readonly CreateConvocationHandler $createConvocationHandler,
         private readonly CreateInscriptionHandler $createInscriptionHandler,
         private readonly CreateCalendarEventsHandler $createCalendarEventsHandler,
-    ) {}
+    ) {
+    }
 
     /**
      * @return array<string, mixed>

@@ -9,7 +9,7 @@ use App\Modules\Parcelle\Application\Write\Dto\ParcelleCreateDto;
 use App\Modules\Parcelle\Application\Write\Handler\CreateParcelleHandler;
 use App\Modules\Parcelle\Infrastructure\Repository\ParcelleRepository;
 use App\Plugins\DataGenerator\Application\Read\Dto\DataGenerationDto;
-use Faker\Factory as Faker;
+use App\Plugins\DataGenerator\Application\Write\DemoRandomDataGenerator;
 
 final class CreateParcellesHandler extends AbstractNullableDtoHandler
 {
@@ -19,6 +19,7 @@ final class CreateParcellesHandler extends AbstractNullableDtoHandler
         private readonly CepageRepository $cepageRepository,
         private readonly CreateParcelleHandler $createParcelleHandler,
         private readonly ParcelleRepository $parcelleRepository,
+        private readonly DemoRandomDataGenerator $randomDataGenerator,
     ) {
     }
 
@@ -35,8 +36,6 @@ final class CreateParcellesHandler extends AbstractNullableDtoHandler
         }
 
         $response = [];
-
-        $faker = Faker::create('fr_FR');
 
         $selectedCepage = null;
         if (!$this->shouldSkip($dto->cepages)) {
@@ -61,13 +60,13 @@ final class CreateParcellesHandler extends AbstractNullableDtoHandler
             $numero = strtoupper(substr($cepage->getNom(), 0, 2)).' '.str_pad((string) ($p++), 3, '0', STR_PAD_LEFT);
 
             $parcelle = $this->createParcelleHandler->handle(
-                cave: $dto->cave,
-                dto: new ParcelleCreateDto(
-                    cepage: $cepage,
-                    superficie: $faker->numberBetween($min_superficie, $max_superficie),
+                    cave: $dto->cave,
+                    dto: new ParcelleCreateDto(
+                        cepage: $cepage,
+                    superficie: $this->randomDataGenerator->numberBetween((int) $min_superficie, (int) $max_superficie),
                     anneePlantation: random_int(1982, (int) date('Y')),
-                    commune: $faker->city(),
-                    lieuDit: $faker->city(),
+                    commune: $this->randomDataGenerator->city(),
+                    lieuDit: $this->randomDataGenerator->lieuDit(),
                     exploitant: $dto->exploitant,
                     prestataire: $dto->prestataire,
                     numero: $numero,

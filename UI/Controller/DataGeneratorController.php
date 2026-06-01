@@ -7,12 +7,9 @@ use App\Modules\User\Infrastructure\Repository\UserRepository;
 use App\Plugins\DataGenerator\Application\DataGeneratorService;
 use App\Plugins\DataGenerator\Application\Read\Handler\ReadDatabaseHandler;
 use App\Plugins\DataGenerator\Application\Write\Handler\ClearDataHandler;
-use App\Plugins\DataGenerator\Application\Write\Handler\SendTestNotificationsHandler;
 use App\Plugins\DataGenerator\Application\Write\Handler\TicketGeneratorHandler;
 use App\Plugins\DataGenerator\UI\Form\DataGeneratorForm;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
@@ -65,7 +62,7 @@ class DataGeneratorController extends AbstractController
                 // Turbo (et en général) exige une redirection après POST (PRG pattern)
                 return $this->redirectToRoute('data_generator_index', status: 303);
             } catch (\Exception $e) {
-                $this->addFlash('danger', 'Erreur lors de la génération des données : ' . $e->getMessage());
+                $this->addFlash('danger', 'Erreur lors de la génération des données : '.$e->getMessage());
             }
         }
 
@@ -87,7 +84,7 @@ class DataGeneratorController extends AbstractController
             $clearDataHandler->handle();
             $this->addFlash('success', 'Données supprimées avec succès !');
         } catch (\Exception $e) {
-            $this->addFlash('danger', 'Erreur lors de la suppression des données : ' . $e->getMessage());
+            $this->addFlash('danger', 'Erreur lors de la suppression des données : '.$e->getMessage());
         }
 
         return $this->redirectToRoute('data_generator_index');
@@ -106,36 +103,38 @@ class DataGeneratorController extends AbstractController
             return !$user->isAdmin() && !$user->isSuperAdmin();
         });
 
-        $userIds = array_map(fn($user) => $user->getId(), $filteredUsers);
+        $userIds = array_map(fn ($user) => $user->getId(), $filteredUsers);
 
         $file = null;
         try {
             $file = $ticketGeneratorHandler->handle($cave, $userIds);
         } catch (\Exception $e) {
-            $this->addFlash('danger', 'Erreur lors de la génération des tickets : ' . $e->getMessage());
+            $this->addFlash('danger', 'Erreur lors de la génération des tickets : '.$e->getMessage());
+
             return $this->redirectToRoute('data_generator_index');
-        };
+        }
 
         if (null === $file) {
             $this->addFlash(
                 'warning',
                 'Aucun ticket généré : aucune convocation acceptée trouvée pour les exploitants à la date du jour.'
             );
-            return $this->redirectToRoute('data_generator_index');
-        } else {
-            try {
-                $response = $this->file(
-                    $file['path'],
-                    $file['filename'],
-                    ResponseHeaderBag::DISPOSITION_ATTACHMENT
-                );
-                $response->deleteFileAfterSend(true);
 
-                return $response;
-            } catch (\Exception $e) {
-                $this->addFlash('danger', 'Erreur lors de la préparation du téléchargement : ' . $e->getMessage());
-                return $this->redirectToRoute('data_generator_index');
-            }
+            return $this->redirectToRoute('data_generator_index');
+        }
+        try {
+            $response = $this->file(
+                $file['path'],
+                $file['filename'],
+                ResponseHeaderBag::DISPOSITION_ATTACHMENT
+            );
+            $response->deleteFileAfterSend(true);
+
+            return $response;
+        } catch (\Exception $e) {
+            $this->addFlash('danger', 'Erreur lors de la préparation du téléchargement : '.$e->getMessage());
+
+            return $this->redirectToRoute('data_generator_index');
         }
     }
 }

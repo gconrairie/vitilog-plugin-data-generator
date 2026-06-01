@@ -55,7 +55,7 @@ class TicketGeneratorHandler
         }
 
         try {
-            return $this->createTicketFile('dummy_tickets_' . date('Y-m-d_H-i-s') . '.txt');
+            return $this->createTicketFile('dummy_tickets_'.date('Y-m-d_H-i-s').'.txt');
         } catch (\Exception $e) {
             return null;
         }
@@ -91,8 +91,8 @@ class TicketGeneratorHandler
             $codeUser = $convocation->getProduction()->getParcelle()->getActiveManager()->getCode();
             $codeCepage = $convocation->getProduction()->getParcelle()->getCepage()->getId();
             $numeroParcelle = $convocation->getProduction()->getParcelle()->getNumero();
-            $numeroVoie = 'V' . rand(1, 100); // numero_voie
-            $numeroPressoir = 'P' . rand(1, 100); // numero_pressoir
+            $numeroVoie = 'V'.rand(1, 100); // numero_voie
+            $numeroPressoir = 'P'.rand(1, 100); // numero_pressoir
 
             $quantiteDemandeeKg = $convocation->getQuantiteDemandeeKg();
             $quantiteLivreeKg = 0;
@@ -126,13 +126,13 @@ class TicketGeneratorHandler
      */
     private function createTicketFile(?string $fileName = null): array
     {
-        $fileName ??= 'dummy_ticket_' . date('Y-m-d_H-i-s') . '.txt';
-        $filePath = $this->projectDir . $this->dummyDir . $fileName;
+        $fileName ??= 'dummy_ticket_'.date('Y-m-d_H-i-s').'.txt';
+        $filePath = $this->projectDir.$this->dummyDir.$fileName;
 
-        if (!is_dir($this->projectDir . $this->dummyDir)) {
-            mkdir($this->projectDir . $this->dummyDir, 0777, true);
+        if (!is_dir($this->projectDir.$this->dummyDir)) {
+            mkdir($this->projectDir.$this->dummyDir, 0777, true);
         } else {
-            $files = glob($this->projectDir . $this->dummyDir . '*');
+            $files = glob($this->projectDir.$this->dummyDir.'*');
             foreach ($files as $file) {
                 if (is_file($file)) {
                     unlink($file);
@@ -153,7 +153,7 @@ class TicketGeneratorHandler
 
     private function buildTicketFileContent(): string
     {
-        $content = '' . PHP_EOL;
+        $content = ''.PHP_EOL;
         foreach ($this->ticketData as $line) {
             $data = implode("\t", [
                 $line['numero_ligne'],
@@ -170,7 +170,7 @@ class TicketGeneratorHandler
                 $line['numero_pressoir'],
                 $line['code_parcelle'],
             ]);
-            $content .= $data . "\r\n";
+            $content .= $data."\r\n";
         }
 
         return $content;
