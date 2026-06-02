@@ -1,9 +1,4 @@
-{% extends 'layout.html.twig' %}
-
-{% block stylesheets %}
-	{{ parent() }}
-	<link rel="stylesheet" href="{{ asset('plugins/datagenerator/data-generator.css') }}">
-{% endblock %}
+{% extends '@DataGenerator/layout_plugin.html.twig' %}
 
 {% block javascripts %}
 	{{ parent() }}
@@ -16,6 +11,10 @@
 
 {% block page_description %}
 	Générez des données de test pour votre application.
+{% endblock %}
+
+{% block page_help %}
+	{% include '@DataGenerator/help/index.html.twig' %}
 {% endblock %}
 
 {% block page_action %}

@@ -103,11 +103,9 @@ class DataGeneratorController extends AbstractController
             return !$user->isAdmin() && !$user->isSuperAdmin();
         });
 
-        $userIds = array_map(fn ($user) => $user->getId(), $filteredUsers);
-
         $file = null;
         try {
-            $file = $ticketGeneratorHandler->handle($cave, $userIds);
+            $file = $ticketGeneratorHandler->handle($cave, $filteredUsers);
         } catch (\Exception $e) {
             $this->addFlash('danger', 'Erreur lors de la génération des tickets : '.$e->getMessage());
 

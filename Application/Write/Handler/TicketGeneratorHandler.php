@@ -7,6 +7,7 @@ use App\Modules\Convocation\Domain\Convocation;
 use App\Modules\Convocation\Domain\Enum\ConvocationResponse;
 use App\Modules\Convocation\Domain\Enum\ConvocationStatus;
 use App\Modules\Convocation\Infrastructure\Repository\ConvocationRepository;
+use App\Modules\User\Domain\User;
 use App\Modules\User\Infrastructure\Repository\UserRepository;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -29,14 +30,14 @@ class TicketGeneratorHandler
     /**
      * @return array{path: string, filename: string}|null
      */
-    public function handle(Cave $cave, array $userIds): ?array
+    public function handle(Cave $cave, array $users): ?array
     {
         $this->ticketData = [];
         $lastLineNumber = 0;
 
-        foreach ($userIds as $userId) {
+        foreach ($users as $user) {
             try {
-                $convocations = $this->findConvocations((int) $userId, $cave);
+                $convocations = $this->findConvocations($user, $cave);
                 $deliverable = array_filter($convocations, function (Convocation $convocation) {
                     return ConvocationStatus::PENDING == $convocation->getStatus()
                         && ConvocationResponse::ACCEPTED == $convocation->getResponseStatus();
@@ -64,13 +65,11 @@ class TicketGeneratorHandler
     /**
      * Parse user parcelles and generate ticket data.
      */
-    private function findConvocations(int $userId, Cave $cave): array
+    private function findConvocations(User $user, Cave $cave): array
     {
-        $user = $this->userRepository->find($userId);
-        if (!$user) {
-            throw new \Exception('User not found');
-        }
-        $convocations = $this->convocationRepository->findAllForUserInRange($user, new \DateTimeImmutable('now'), new \DateTimeImmutable('tomorrow'), $cave);
+        $startTime = new \DateTimeImmutable('now');
+        $endTime = new \DateTimeImmutable('next month');
+        $convocations = $this->convocationRepository->findAllForUserInRange($user, $startTime, $endTime, $cave, true);
 
         return $convocations;
     }

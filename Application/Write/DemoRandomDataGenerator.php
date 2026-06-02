@@ -102,7 +102,7 @@ final class DemoRandomDataGenerator
 
     public function company(): string
     {
-        return self::COMPANY_PREFIXES[array_rand(self::COMPANY_PREFIXES)] . ' ' . self::COMPANY_NAMES[array_rand(self::COMPANY_NAMES)];
+        return self::COMPANY_PREFIXES[array_rand(self::COMPANY_PREFIXES)].' '.self::COMPANY_NAMES[array_rand(self::COMPANY_NAMES)];
     }
 
     public function mobilePhone(): string

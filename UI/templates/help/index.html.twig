@@ -1,0 +1,62 @@
+<h3>À quoi sert cette page ?</h3>
+<p>
+	Cette page génère des données de démonstration pour tester les parcours métier de la cave : utilisateurs, parcelles, productions, prélèvements, convocations, inscriptions et événements.
+</p>
+
+<h3><i class="fas fa-user pr-1 text-xs"></i>Exploitant</h3><ul>
+	<li><strong>Sélectionner un exploitant</strong> permet d'utiliser un exploitant existant, de créer un nouvel exploitant, ou de ne pas en créer.</li>
+	<li><strong>Email</strong> permet de forcer une adresse précise. Laissez le champ vide pour générer une adresse aléatoire.</li>
+	<li><strong>Est aussi prestataire</strong> ajoute également le rôle prestataire à l'exploitant généré.</li>
+</ul>
+
+<h3><i class="fas fa-user pr-1 text-xs"></i>Prestataire</h3>
+<ul>
+	<li><strong>Sélectionner un prestataire</strong> permet d'utiliser un prestataire existant, de créer un nouveau prestataire, ou de ne pas en créer.</li>
+	<li><strong>Email</strong> permet de forcer une adresse précise. Laissez le champ vide pour générer une adresse aléatoire.</li>
+</ul>
+
+<h3><i class="fa fa-seedling pr-1 text-xs"></i>Parcelles</h3>
+<ul>
+	<li><strong>Quantité</strong> définit le nombre de parcelles à créer.</li>
+	<li><strong>Cépages</strong> force un cépage précis ou laisse le plugin choisir au hasard.</li>
+</ul>
+
+<h3><i class="fa fa-tractor pr-1 text-xs"></i>Production</h3>
+<ul>
+	<li><strong>Production</strong> crée les productions liées aux parcelles générées ou sélectionnées.</li>
+	<li><strong>Prélèvements</strong> ajoute des données de maturité aux productions.</li>
+</ul>
+
+<h3><i class="fas fa-comment pr-1 text-xs"></i>Convocation</h3>
+<ul>
+	<li><strong>Convocation</strong> prépare une convocation pour les productions générées.</li>
+	<li><strong>Acceptée</strong> génère une convocation avec une réponse acceptée du viticulteur.</li>
+	<li><strong>Date</strong> force la date utilisée. Si elle est vide, le plugin applique sa date par défaut.</li>
+</ul>
+
+<h3><i class="fas fa-clipboard-list pr-1 text-xs"></i>Inscription</h3>
+<ul>
+	<li><strong>Inscription</strong> crée des évènements avec possibilité d'inscription.</li>
+	<li><strong>Demande envoyée</strong> simule une demande d'inscription du viticulteur.</li>
+	<li><strong>Acceptée</strong> génère directement une inscription acceptée par l'administrateur.</li>
+</ul>
+
+<h3><i class="fas fa-gear pr-1 text-xs"></i>Options</h3>
+<ul>
+	<li><strong>Générer un calendrier d'apports</strong> crée des événements utiles pour tester le calendrier.</li>
+	<li><strong>Générer des données passées</strong> crée des données sur la campagne précédente pour tester les historiques.</li>
+</ul>
+
+<h3>Actions sensibles</h3>
+<ul>
+	<li><span class="btn inline btn-primary with-icon"><i class="fas fa-wand-magic-sparkles"></i>Générer les données</span> génère les données en se basant sur les paramètres définis.</li>
+	<li><span class="btn inline btn-secondary with-icon"><i class="fas fa-ticket"></i>Générer les tickets d'apports</span> génère un fichier de tickets (Format MidiMesure) à partir des convocations acceptées.</li>
+	<li><span class="btn inline btn-danger with-icon"><i class="fas fa-triangle-exclamation"></i>Effacer les données générées</span> supprime les données générées par le plugin. <strong>Cette action est irréversible.</strong></li>
+</ul>
+
+<h3>Points d'attention</h3>
+<ul>
+	<li>Utilisez ce plugin uniquement sur une cave de test ou de démonstration.</li>
+	<li>Contrôlez le compteur en haut de page avant de générer ou supprimer des données.</li>
+	<li>Les données générées peuvent déclencher des cas métier visibles dans les autres modules.</li>
+</ul>
