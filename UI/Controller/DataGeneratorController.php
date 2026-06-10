@@ -70,19 +70,23 @@ class DataGeneratorController extends AbstractController
             '@DataGenerator/index.html.twig',
             [
                 'generator_form' => $form,
-
+                'clear_targets' => ClearDataHandler::TARGET_LABELS,
                 'counters' => $counters,
             ]
         );
     }
 
-    #[Route('/clear', name: 'clear')]
+    #[Route('/clear/{target}', name: 'clear', methods: ['POST'])]
     public function clearData(
         ClearDataHandler $clearDataHandler,
-    ) {
+        string $target = ClearDataHandler::TARGET_ALL,
+    ): Response {
         try {
-            $clearDataHandler->handle();
-            $this->addFlash('success', 'Données supprimées avec succès !');
+            $clearDataHandler->handle($target);
+            $this->addFlash(
+                'success',
+                sprintf('Données supprimées avec succès : %s.', ClearDataHandler::TARGET_LABELS[$target] ?? $target)
+            );
         } catch (\Exception $e) {
             $this->addFlash('danger', 'Erreur lors de la suppression des données : '.$e->getMessage());
         }

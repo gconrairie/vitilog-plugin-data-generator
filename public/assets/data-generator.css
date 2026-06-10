@@ -24,25 +24,53 @@
 }
 
 .dg-card {
-	padding: 0.75rem 0.75rem 0.25rem;
 	border: 1px solid #e2e8f0;
 	border-radius: 0.375rem;
 	background: #fff;
 	height: 100%;
+	display: flex;
+	flex-direction: column;
 }
 
-.dg-card__title {
-	margin: 0 0 0.75rem;
-	padding-bottom: 0.5rem;
+.dg-card_title {
+	padding: .5rem .8rem;
 	font-size: 1.125rem;
 	font-weight: 600;
 	color: #64748b;
+	border-bottom: 1px solid #e2e8f0;
 }
 
-.dg-card__title i {
-	margin-right: 0.25rem;
-	color: #94a3b8;
+.dg-card_body {
+	flex: 1;
+	padding: 1rem;
 }
+
+.dg-card_footer {
+	border-top: 1px solid #ffc9c9;
+	background-color: #fafafa;
+	padding: .8rem;
+	display: flex;
+	flex-direction: column;
+	gap: .5rem;
+}
+
+.dg-card_footer button {
+	background-color: #fff;
+	color: #666;
+	border: 1px solid #e1c4c4;
+	border-radius: .4rem;
+	font-size: .9rem;
+	padding: .2rem;
+	cursor: pointer;
+	transition: all .3s ease-in-out
+}
+
+.dg-card_footer button:hover {
+	background-color: #d55a5a;
+	color: #FFF;
+	border-color: #d85454;
+}
+
 
 .dg-submit {
 	margin-top: 0.75rem;
